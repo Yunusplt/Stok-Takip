@@ -14,7 +14,7 @@ import RegisterForm, { RegisterSchema } from "../components/RegisterForm";
 
 
 const Register = () => {
-  const register = useAuthCall()
+  const {register} = useAuthCall()
   
   return (
     <Container maxWidth="lg">
@@ -69,7 +69,7 @@ const Register = () => {
             onSubmit={(values, actions) => {
               // same shape as initial values
               console.log(values);
-              register(values);
+              register(values); //todo formdan gelen values
               actions.resetForm();
             }}
             component={props=> <RegisterForm {...props}/>}
