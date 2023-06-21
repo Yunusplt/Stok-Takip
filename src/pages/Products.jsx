@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useEffect } from "react";
+import useStockCall from "../hooks/useStockCall";
 
 const Products = () => {
-  return (
-    <div>Products</div>
-  )
-}
+  const { getStockData } = useStockCall();
 
-export default Products
+  useEffect(() => {
+    getStockData("firms"); //todo dinamiklik buradan baslar...
+  }, []);
+};
+
+export default Products;
