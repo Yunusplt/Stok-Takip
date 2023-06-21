@@ -10,12 +10,19 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import MenuListItems from "../components/MenuListItems";
 import { Outlet } from "react-router-dom";
+import { Button, useTheme } from "@mui/material";
+import useAuthCall from "../hooks/useAuthCall"
+import { useSelector } from "react-redux";
+
 
 const drawerWidth = 240;
 
 function Dashboard(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const theme = useTheme()
+  const {logout} = useAuthCall()
+  const { currentUser } = useSelector((state) => state.auth);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -52,9 +59,17 @@ function Dashboard(props) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Responsive drawer
+          <Typography sx={{flexGrow:1}} variant="h6" noWrap component="div">
+            StockApp
           </Typography>
+          {currentUser && (
+            <Button
+              color="inherit"
+              onClick={logout}
+            >
+              Logout
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
       <Box
@@ -76,6 +91,7 @@ function Dashboard(props) {
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
+              backgroundColor: theme.palette.secondary.main,
             },
           }}
         >
@@ -88,6 +104,7 @@ function Dashboard(props) {
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
+              backgroundColor: theme.palette.secondary.main,
             },
           }}
           open
@@ -105,7 +122,7 @@ function Dashboard(props) {
       >
         <Toolbar />
         {/* //todo private router var outlet yapisi kuruyoruz... */}
-        <Outlet/>
+        <Outlet />
       </Box>
     </Box>
   );
