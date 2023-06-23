@@ -4,6 +4,7 @@ import { Button, Grid, Typography } from '@mui/material'
 import { useSelector } from 'react-redux'
 import FirmCard from '../components/FirmCard'
 import FirmModal from '../components/FirmModal'
+import { flex } from "../styles/globalStyle";
 
 
 const Firms = () => {
@@ -37,10 +38,10 @@ console.log(firms);
   
   return (
     <>
-      <Typography variant="h4" color="red" mb={3}>
+      <Typography variant="h4" color="red" mb={2}>
         Firms
       </Typography>
-      <Button variant="contained" onClick={handleOpen}>
+      <Button variant="contained" onClick={handleOpen} sx={{mb:2}}>
         new firm
       </Button>
       <FirmModal
@@ -51,12 +52,7 @@ console.log(firms);
       />
       <Grid
         container
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: 2,
-        }}
+        sx={flex}
       >
         {/* card yapisini neyle doldurcam gelen verilerle. nerdeler statelerimdeler.  */}
         {firms.map((firm) => (
