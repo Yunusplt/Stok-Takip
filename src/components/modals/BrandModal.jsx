@@ -8,24 +8,23 @@ import { modalStyle } from "../../styles/globalStyle";
 
 
 export default function BrandModal({open,handleClose,info, setInfo}) {
-
-      const { postStockData } = useStockCall();
-      const { putStockData } = useStockCall();
+  const { postStockData } = useStockCall();
+  const { putStockData } = useStockCall();
     
-    const handleChange=(e)=>{
-        setInfo({...info, [e.target.name] : e.target.value})
-    }
+  const handleChange=(e)=>{
+    e.preventDefault();
+    setInfo({...info, [e.target.name] : e.target.value})
+  }
 
-    const handleSubmit=(e)=>{
-        e.preventDefault()
-        if (info.id) {
-            putStockData("brands", info,info.name)
-        }else{
-            postStockData("brands",info,info.name)
-        }
-        handleClose()
-        
+  const handleSubmit=(e)=>{
+    e.preventDefault()
+    if (info.id) {
+      putStockData("brands", info,info.name)
+    }else{
+      postStockData("brands",info,info.name)
     }
+    handleClose()     
+  }
 
   return (
     <div>

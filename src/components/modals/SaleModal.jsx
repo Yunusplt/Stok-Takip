@@ -20,13 +20,11 @@ export default function SaleModal({ open, handleClose, info, setInfo }) {
 
   const handleSubmit = e => {
     e.preventDefault();
-
     if (info.id) {
       putStockData("sales", info);
     } else {
       postStockData("sales", info);
     }
-
     handleClose();
   };
 

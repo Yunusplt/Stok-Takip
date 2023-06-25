@@ -113,11 +113,10 @@ export default function ProductModal({ open, handleClose, info, setInfo }) {
     const { name, value } = e.target;
     setInfo({ ...info, [name]: value });
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-
     postStockData("products", info, info.name);
-
     handleClose();
   };
 

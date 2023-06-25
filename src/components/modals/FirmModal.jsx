@@ -4,77 +4,66 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import { TextField } from "@mui/material";
 import useStockCall from "../../hooks/useStockCall";
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
+import { flexColumn, modalStyle } from "../../styles/globalStyle";
 
 export default function FirmModal({ open, handleClose, info, setInfo }) {
   //   const [open, setOpen] = React.useState(false);
   //   const handleOpen = () => setOpen(true);
   //   const handleClose = () => setOpen(false);
   //todo lifting state up
+  //! statelerimizi lifting state up yaparak bir üst componente taşıdık oradan gerekli olan yerlere dağıtım yapabilelim. Bizim örneğimizde FirmModal componenti hem yeni firma eklemek için hemde var olan firmayı update edebilmek için kullanılıyor. Bu nedenle modalı açabilmek ve update işleminde içini doldurabilmek için Firms componentine statelerimizi taşımış olduk oradan da FirmCard componentine props yoluyla göndermiş olduk.
 
-//   const [info, setInfo] = useState({
-//     name: "",
-//     phone: "",
-//     image: "",
-//     address: "",
-//   });
+  //   const [info, setInfo] = useState({
+  //     name: "",
+  //     phone: "",
+  //     image: "",
+  //     address: "",
+  //   });
 
-
-const { postStockData, putStockData } = useStockCall();
+  const { postStockData, putStockData } = useStockCall();
   const handleChange = (e) => {
     console.log(e.target.name);
     setInfo({ ...info, [e.target.name]: e.target.value });
   };
+  //! inputların name attributelarındaki isimler ile info statetimin içindeki keyler aynı olduğu için bu şekilde tek bir fonksiyonla inputdaki verilerimi state e aktarabildim.
   console.log(info);
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (info.id) {
-        putStockData("firms",info,info.name)
-    }else{
-        postStockData("firms",info,info.name)
+      putStockData("firms", info, info.name);
+    } else {
+      postStockData("firms", info, info.name);
     }
-    
+
     // setInfo({
     //   name: "",
     //   phone: "",
     //   image: "",         //todo handleClose icine attik
     //   address: "",
     // });
-    handleClose()
+    handleClose(); //! submit işleminden sonra modalın kapanması için burada handleClose fonksiyonunu çağırıyoruz.
   };
-
-  
 
   return (
     <div>
       {/* <Button onClick={handleOpen}>Open modal</Button> */}
       <Modal
         open={open}
-        onClose={()=>{handleClose()
-    //     setInfo({
-    //   name: "",
-    //   phone: "",
-    //   image: "",
-    //   address: "",
-    // })
-    }}
+        onClose={() => {
+          handleClose();
+          //     setInfo({
+          //   name: "",
+          //   phone: "",
+          //   image: "",
+          //   address: "",
+          // })
+        }}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        <Box sx={modalStyle}>
           <Box
-            sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+            sx={flexColumn}
             component={"form"}
             onSubmit={handleSubmit}
           >
@@ -119,7 +108,7 @@ const { postStockData, putStockData } = useStockCall();
               required
             />
             <Button variant="contained" type="submit">
-            {info.id ? "Update Firm" : "Submit Firm"}
+              {info.id ? "Update Firm" : "Submit Firm"}
             </Button>
           </Box>
         </Box>
