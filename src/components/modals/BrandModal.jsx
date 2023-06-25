@@ -3,8 +3,8 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import { TextField } from "@mui/material";
-import useStockCall from "../hooks/useStockCall";
-import { modalStyle } from "../styles/globalStyle";
+import useStockCall from "../../hooks/useStockCall";
+import { modalStyle } from "../../styles/globalStyle";
 
 
 export default function BrandModal({open,handleClose,info, setInfo}) {

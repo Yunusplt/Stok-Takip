@@ -1,6 +1,6 @@
 import { Button, Grid, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import BrandModal from "../components/BrandModal";
+import BrandModal from "../components/modals/BrandModal";
 import BrandCard from "../components/BrandCard";
 import useStockCall from "../hooks/useStockCall";
 import { useSelector } from "react-redux";
@@ -26,7 +26,7 @@ const Brands = () => {
 
   useEffect(() => {
     getStockData("brands");
-  }, []);
+  }, []); // eslint-disable-line
 
   return (
     <div>

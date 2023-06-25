@@ -1,14 +1,17 @@
-import { Button, Grid, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import ProductModal from "../components/ProductModal";
-import BrandCard from "../components/BrandCard";
+import { useEffect, useState } from "react";
 import useStockCall from "../hooks/useStockCall";
+import Typography from "@mui/material/Typography";
+import { Button } from "@mui/material";
 import { useSelector } from "react-redux";
+import ProductModal from "../components/modals/ProductModal";
+import Box from "@mui/material/Box";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { btnStyle } from "../styles/globalStyle";
 
 const Products = () => {
-  const { getStockData } = useStockCall();
+  const { deleteStockData, getProCatBrand } = useStockCall();
   const { products } = useSelector((state) => state.stock);
-
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
@@ -18,24 +21,106 @@ const Products = () => {
       category_id: "",
       brand_id: "",
     });
+    //* handleClose olduğunda yani modal kapnadığında formdaki verilerin temizlenmesi için burada tanımladık.
   };
-
   const [info, setInfo] = useState({
     name: "",
     category_id: "",
     brand_id: "",
   });
+  //!######### TABLO ################
+  const columns = [
+    {
+      field: "id",
+      headerName: "#",
+      minWidth: 40,
+      maxWidth: 70,
+      headerAlign: "center",
+      align: "center",
+      flex: 1,
+    },
+    {
+      field: "category",
+      headerName: "Category",
+      minWidth: 150,
+      headerAlign: "center",
+      align: "center",
+      flex: 3,
+    },
+    {
+      field: "brand",
+      headerName: "Brand",
+      minWidth: 150,
+      headerAlign: "center",
+      align: "center",
+      flex: 2,
+    },
+    {
+      field: "name",
+      headerName: "Name",
+      minWidth: 110,
+      headerAlign: "center",
+      align: "center",
+      flex: 2,
+    },
+    {
+      field: "stock",
+      headerName: "Stock",
+      minWidth: 110,
+      headerAlign: "center",
+      align: "center",
+      flex: 0.8,
+    },
+    {
+      field: "actions",
+      headerName: "Actions",
+      description: "This column has a value getter and is not sortable.",
+      headerAlign: "center",
+      align: "center",
+      sortable: false,
+      minWidth: 50,
+      flex: 1,
+      renderCell: (params) => (
+        <>
+          {/* {console.log(params)} */}
+          <DeleteIcon
+            sx={btnStyle}
+            onClick={() =>
+              deleteStockData("products", params.id, params.row.name)
+            }
+          />
+        </>
+      ),
+    },
+  ];
 
+  // const rows = [
+  //   { id: 1, lastName: "Snow", firstName: "Jon", age: 35 },
+  //   { id: 2, lastName: "Lannister", firstName: "Cersei", age: 42 },
+  //   { id: 3, lastName: "Lannister", firstName: "Jaime", age: 45 },
+  //   { id: 4, lastName: "Stark", firstName: "Arya", age: 16 },
+  //   { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: null },
+  //   { id: 6, lastName: "Melisandre", firstName: null, age: 150 },
+  //   { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
+  //   { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
+  //   { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
+  // ];
+  //!#########  ################  #################
   useEffect(() => {
-    getStockData("products");
+    // getStockData("brands");
+    // getStockData("products");
+    // getStockData("categories");
+    getProCatBrand(); //! //! for Promise all
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <div>
-      <Typography variant="h4" color="error" mb={2}>
+      <Typography variant="h4" color="error" mb={3}>
         Products
       </Typography>
-      <Button variant="contained" onClick={handleOpen} sx={{ mb: 2 }}>
+      <Button variant="contained" onClick={handleOpen}>
         New Product
       </Button>
       <ProductModal
@@ -44,37 +129,27 @@ const Products = () => {
         info={info}
         setInfo={setInfo}
       />
-      <Grid
-        container
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: 2,
-        }}
-      >
-        {products.map((brand) => (
-          <Grid item key={brand.id}>
-            <BrandCard
-              brand={brand}
-              handleOpen={handleOpen}
-              setInfo={setInfo}
-            />
-          </Grid>
-        ))}
-      </Grid>
+      <Box sx={{ width: "100%", marginTop: "1rem" }}>
+        <DataGrid
+          autoHeight
+          rows={products}
+          columns={columns}
+          initialState={{
+            pagination: {
+              paginationModel: {
+                pageSize: 5,
+              },
+            },
+          }}
+          slots={{
+            toolbar: GridToolbar,
+          }}
+          pageSizeOptions={[5, 10, 25, 50]}
+          disableRowSelectionOnClick
+        />
+      </Box>
     </div>
   );
 };
 
 export default Products;
-
-// https://cdn.pixabay.com/photo/2016/11/18/11/16/instagram-1834010__340.png
-// https://cdn.pixabay.com/photo/2016/11/18/11/16/facebook-1834007__340.png
-// https://cdn.pixabay.com/photo/2016/11/18/11/17/youtube-1834016__340.png
-// https://cdn.pixabay.com/photo/2016/11/21/08/44/whatsapp-1844471__340.png
-// https://cdn.pixabay.com/photo/2016/11/18/11/16/social-1834011__340.png
-// https://cdn.pixabay.com/photo/2017/01/11/08/31/icon-1971130__340.png
-// https://cdn.pixabay.com/photo/2017/01/11/08/32/icon-1971136__340.png
-// https://cdn.pixabay.com/photo/2017/02/01/08/55/social-2029115__340.png
-// https://cdn.pixabay.com/photo/2016/11/23/09/40/social-1852360__340.png
